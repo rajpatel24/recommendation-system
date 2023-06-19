@@ -1,0 +1,165 @@
+{% extends 'layout/app.html' %}
+
+{% load static %}
+{% block body %}
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <div class="card-body">Your Order</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="order/list">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body">Wishlist</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="wishlist/list">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-xl-3 col-md-6">
+                <div class="card bg-success text-white mb-4">
+                    <div class="card-body">Underr</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-danger text-white mb-4">
+                    <div class="card-body">Danger Card</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        Rank Based Product Chart
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myAreaChart" width="100%" height="40"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Content Based Product Chart
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myBarChart" width="100%" height="40"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Collabrative Filter based on products
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Brand</th>
+                        <th>Phone</th>
+                        <th>Price</th>
+                        <th>Created At</th>
+                        <!-- <th>Action</th> -->
+                    </tr>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Brand</th>
+                        <th>Phone</th>
+                        <th>Price</th>
+                        <th>Created At</th>
+                        <!-- <th>Action</th> -->
+                    </tr>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                        {% if combine_query %}
+                        {% for product in combine_query %}
+                            <tr>
+                                <td>{{ product.asin }}</td>
+                                <td>{{ product.brand }}</td>
+                                <td>{{ product.title }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.created_at  |date:"d-m-Y H:i:s" }}</td>
+                                <!-- <td style="display: flex">
+                                    <a title="Add to cart" class="btn btn-sm btn-warning" href="buy-product/{{product.id}}"> <i class="fa fa-shopping-cart"></i></a>&nbsp;
+                                    <a title="Add to whishlist" class="btn btn-sm btn-danger" href="add-wishlist/{{product.id}}"> <i style="color: white" class="fa fa-heart"></i></a> -->
+                                    <!-- <a class="btn btn-sm btn-warning" href="edit/{{ member.id }}"> <span class="fa fa-edit"></span> Edit</a>
+                                    <a class="btn btn-sm btn-warning" href="edit/{{ member.id }}"> <span class="fa fa-edit"></span> Edit</a>
+                                    <a class="btn btn-sm btn-danger" href="delete/{{ member.id }}"><span class="fa fa-trash"></span> Delete</a> -->
+                                <!-- </td> -->
+                            </tr>
+                        {% endfor %}
+                        {% endif %}
+                        {% for product in memory_user_item_based_filter %}
+                            <tr>
+                                <td>{{ product.asin }}</td>
+                                <td>{{ product.brand }}</td>
+                                <td>{{ product.title }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.created_at  |date:"d-m-Y H:i:s" }}</td>
+                                <!-- <td style="display: flex">
+                                    <a title="Add to cart" class="btn btn-sm btn-warning" href="buy-product/{{product.id}}"> <i class="fa fa-shopping-cart"></i></a>&nbsp;
+                                    <a title="Add to whishlist" class="btn btn-sm btn-danger" href="add-wishlist/{{product.id}}"> <i style="color: white" class="fa fa-heart"></i></a> -->
+                                    <!-- <a class="btn btn-sm btn-warning" href="edit/{{ member.id }}"> <span class="fa fa-edit"></span> Edit</a>
+                                    <a class="btn btn-sm btn-warning" href="edit/{{ member.id }}"> <span class="fa fa-edit"></span> Edit</a>
+                                    <a class="btn btn-sm btn-danger" href="delete/{{ member.id }}"><span class="fa fa-trash"></span> Delete</a> -->
+                                <!-- </td> -->
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="{% static 'assets/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'assets/demo/chart-bar-demo.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
+    <script>
+    $(document).ready(function() {
+        $.ajax({
+          url: "/rank-base",
+          type: "GET",
+          success: function(data) {
+            $('#keyList').val(data['key_list'])
+            $('#valueList').val(data['value_list'])
+            console.log(data, "????????????");
+          },
+          error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+          }
+        });
+      });
+    </script>
+{% endblock %}

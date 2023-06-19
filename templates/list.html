@@ -1,0 +1,254 @@
+{% extends 'layout/app.html' %}
+
+{% load static %}
+
+{% block body %}
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Welcome</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">mobile</li>
+        </ol>
+        <div class="card mb-4">
+<!--            <div class="card-header">-->
+<!--                <i class="fas fa-table me-1"></i>-->
+<!--                Product List-->
+<!--                &lt;!&ndash; <a class="btn btn-sm btn-success" href="{% url 'create' %}" style="padding: 8px; float: right; background-color: green; color: white;">ADD</a> &ndash;&gt;-->
+<!--            </div>-->
+
+            <div class="card-body">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% if rating_wise_recommended_products %}
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                            Recommended Products List (Top rated products)
+                        <!-- <a class="btn btn-sm btn-success" href="{% url 'create' %}" style="padding: 8px; float: right; background-color: green; color: white;">ADD</a> -->
+                    </div>
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Discounted Price</th>
+                            <th>Actual Price</th>
+                            <th>Discount Percentage</th>
+                            <th>Rating</th>
+                            <th>Rating Count</th>
+                            <th>About</th>
+                            <th>Image</th>
+                            <th>Created At</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in rating_wise_recommended_products %}
+                            <tr>
+                                <td>{{ product.product_id }}</td>
+                                <td>{{ product.product_name }}</td>
+                                <td>{{ product.category }}</td>
+                                <td>{{ product.discounted_price }}</td>
+                                <td>{{ product.actual_price }}</td>
+                                <td>{{ product.discount_percentage }} %</td>
+                                <td>{{ product.rating }}</td>
+                                <td>{{ product.rating_count }}</td>
+                                <td>{{ product.about_product }}</td>
+                                <td><img src="{{ product.img_link }}" alt="Product Image"></td>
+                                <td>{{ product.created_at  |date:"d-m-Y H:i:s" }}</td>
+                                <td style="display: flex">
+                                    <a title="Add to cart" class="btn btn-sm btn-warning" href="buy-product/{{product.id}}"> <i class="fa fa-shopping-cart"></i></a>&nbsp;
+                                    <a title="Add to wishlist" class="btn btn-sm btn-danger" href="add-wishlist/{{product.id}}"> <i style="color: white" class="fa fa-heart"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                        All Products List
+                    <!-- <a class="btn btn-sm btn-success" href="{% url 'create' %}" style="padding: 8px; float: right; background-color: green; color: white;">ADD</a> -->
+                </div>
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Discounted Price</th>
+                        <th>Actual Price</th>
+                        <th>Discount Percentage</th>
+                        <th>Rating</th>
+                        <th>Rating Count</th>
+                        <th>About</th>
+                        <th>Image</th>
+                        <th>Created At</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products1 %}
+                    <tr>
+                        <td>{{ product.product_id }}</td>
+                        <td>{{ product.product_name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.discounted_price }}</td>
+                        <td>{{ product.actual_price }}</td>
+                        <td>{{ product.discount_percentage }} %</td>
+                        <td>{{ product.rating }}</td>
+                        <td>{{ product.rating_count }}</td>
+                        <td>{{ product.about_product }}</td>
+                        <td>{{ product.img_link }}</td>
+                        <td>{{ product.created_at  |date:"d-m-Y H:i:s" }}</td>
+<!--                        <td style="display: flex">-->
+<!--                            <a title="Add to cart" class="btn btn-sm btn-warning" href="#" onclick="openModal('{{ product.id }}')">-->
+<!--                                <i class="fa fa-shopping-cart"></i>-->
+<!--                            </a>&nbsp;-->
+<!--                            <a title="Add to wishlist" class="btn btn-sm btn-danger" href="add-wishlist/{{product.id}}">-->
+<!--                                <i style="color: white" class="fa fa-heart"></i>-->
+<!--                            </a>-->
+<!--                        </td>-->
+                        <td style="display: flex">
+                            <a title="Add to cart" class="btn btn-sm btn-warning" href="buy-product/{{product.id}}"> <i class="fa fa-shopping-cart"></i></a>&nbsp;
+                            <a title="Add to whishlist" class="btn btn-sm btn-danger" href="add-wishlist/{{product.id}}"> <i style="color: white" class="fa fa-heart"></i></a>
+                            <!-- <a class="btn btn-sm btn-warning" href="edit/{{ member.id }}"> <span class="fa fa-edit"></span> Edit</a>
+                            <a class="btn btn-sm btn-warning" href="edit/{{ member.id }}"> <span class="fa fa-edit"></span> Edit</a>
+                            <a class="btn btn-sm btn-danger" href="delete/{{ member.id }}"><span class="fa fa-trash"></span> Delete</a> -->
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.asin }}</td>
+                            <td>{{ product.brand }}</td>
+                            <td>{{ product.title }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.created_at  |date:"d-m-Y H:i:s" }}</td>
+                            <td style="display: flex">
+                                <a title="Add to cart" class="btn btn-sm btn-warning" href="buy-product/{{product.id}}"> <i class="fa fa-shopping-cart"></i></a>&nbsp;
+                                <a title="Add to wishlist" class="btn btn-sm btn-danger" href="add-wishlist/{{product.id}}"> <i style="color: white" class="fa fa-heart"></i></a>
+                                <!-- <a class="btn btn-sm btn-warning" href="edit/{{ member.id }}"> <span class="fa fa-edit"></span> Edit</a>
+                                <a class="btn btn-sm btn-warning" href="edit/{{ member.id }}"> <span class="fa fa-edit"></span> Edit</a>
+                                <a class="btn btn-sm btn-danger" href="delete/{{ member.id }}"><span class="fa fa-trash"></span> Delete</a> -->
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+function openModal(asin) {
+    // Fetch additional product data using AJAX
+    console.log("\n\n -----")
+    fetch('/get-products/')
+        .then(response => response.json())
+        .then(products => {
+            // Create the modal content
+            let modalContent = document.createElement('div');
+
+            // Create the confirmation message
+            let confirmationMessage = document.createElement('p');
+            confirmationMessage.textContent = 'Are you sure you want to add this item to your cart?';
+
+            // Create the place order button
+            let placeOrderButton = document.createElement('button');
+            placeOrderButton.textContent = 'Place Order';
+
+            // Create the recommended products message
+            let recommendedProductsMessage = document.createElement('p');
+            recommendedProductsMessage.textContent = 'Recommended Products:';
+
+            // Attach event listener to the place order button
+            placeOrderButton.addEventListener('click', function() {
+                // Handle the place order logic here
+                // You can make an AJAX request to the server to process the order
+                console.log('Placing order for ASIN:', asin);
+
+                    fetch('/buy-product/' + asin, {
+                    method: 'POST', // Use the appropriate HTTP method (e.g., POST or GET)
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}' // Include the CSRF token for Django's protection
+                    },
+                    body: JSON.stringify({
+                        // Include any additional data you want to send to the server
+                        // For example, you can send the ASIN and any other relevant data
+                        asin: asin
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server
+                    console.log('Order placed successfully:', data);
+                    // You can perform any necessary actions after the order is placed, such as displaying a success message or redirecting the user
+                })
+                .catch(error => {
+                    console.log('Error placing the order:', error);
+                    // Handle any errors that occurred during the order placement process
+                });
+
+                // Close the modal after the order is placed
+                modal.hide();
+            });
+
+            // Append the confirmation message and place order button to the modal content
+            modalContent.appendChild(confirmationMessage);
+            modalContent.appendChild(placeOrderButton);
+            modalContent.appendChild(recommendedProductsMessage);
+
+            // Display the additional products
+            for (let i = 0; i < products.length; i++) {
+                let additionalProduct = document.createElement('p');
+                additionalProduct.textContent = 'Additional Product: ' + products[i].title;
+
+                let placeOrderButton = document.createElement('button');
+                placeOrderButton.textContent = 'Place Order';
+
+                modalContent.appendChild(additionalProduct);
+            }
+
+            console.log(modalContent)
+
+            // Create the modal element
+            let modalElement = document.createElement('div');
+            modalElement.classList.add('modal', 'fade');
+            modalElement.id = 'myModal';
+            modalElement.tabIndex = '-1';
+            modalElement.setAttribute('aria-labelledby', 'exampleModalLabel');
+            modalElement.setAttribute('aria-hidden', 'true');
+
+            let modalDialog = document.createElement('div');
+            modalDialog.classList.add('modal-dialog');
+
+            let modalContentElement = document.createElement('div');
+            modalContentElement.classList.add('modal-content');
+
+            // Append the modal content to the modal element
+            modalContentElement.appendChild(modalContent);
+            modalDialog.appendChild(modalContentElement);
+            modalElement.appendChild(modalDialog);
+
+            // Append the modal element to the document body
+            document.body.appendChild(modalElement);
+
+            // Create the modal
+            let modal = new bootstrap.Modal(document.getElementById('myModal'));
+
+            // Show the modal
+            modal.show();
+        })
+        .catch(error => {
+            console.log('Error fetching additional product data:', error);
+        });
+}
+</script>
+{% endblock %}
